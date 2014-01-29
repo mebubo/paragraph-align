@@ -67,21 +67,22 @@ def format(aligned):
         print p[1] if p[1] is not None else ".",
 
 def read_file(name):
-    def _():
+    def generator():
         with open(name) as f:
             for line in f:
                 yield line
-    return list(_())
+    return list(generator())[1:-1]
 
 def write_table(pairs, name="table.html"):
     with open(name, 'w') as f:
-        f.write('<html><body><table border="1" style="border-collapse: collapse">')
+        f.write('<html><head><meta charset="utf-8"></head><body><table border="1" style="border-collapse: collapse">\n')
         for p1, p2 in pairs:
-            f.write('<tr><td>%s</td><td>%s</td><tr>\n' % (p1, p2))
+            f.write('<tr><td>%s</td><td>%s</td></tr>\n' % (p1, p2))
         f.write('</table></body></html>')
 
 def merge(out, *inputs):
     for files in zip(*map(os.listdir, inputs)):
         write_table(align(*map(read_file, map(lambda x: join(*x), zip(inputs, files)))), join(out, files[0]))
 
-merge("hpmor_fren", "hpmor_fr", "hpmor")
+merge("hpmor_fren", "hpmor_fr", "hpmor_en")
+# merge("hpmor_ruen", "hpmor_ru", "hpmor")
