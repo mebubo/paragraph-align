@@ -95,7 +95,10 @@ def write_table(pairs, name="table.html"):
 
 def merge(out, *inputs):
     for files in zip(*map(os.listdir, inputs)):
-        write_table(align(*map(read_file, map(lambda x: join(*x), zip(inputs, files)))), join(out, files[0]))
+        paths = map(lambda x: join(*x), zip(inputs, files))
+        sequences = map(read_file, paths)
+        out_path = join(out, files[0])
+        write_table(align(*sequences), out_path)
 
 merge("hpmor_fren", "hpmor_fr", "hpmor_en")
 # merge("hpmor_ruen", "hpmor_ru", "hpmor")
